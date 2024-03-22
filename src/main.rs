@@ -33,18 +33,13 @@ fn syscall(mut a0: u64, a1: u64, a2: u64, a3: u64, a4: u64, a5: u64, a6: u64, a7
     a0
 }
 
-// Linux system calls for the RISC-V architecture: Exit.
-// See: https://github.com/westerndigitalcorporation/RISC-V-Linux/blob/master/riscv-pk/pk/syscall.h
 fn syscall_exit(code: u64) -> ! {
     syscall(code, 0, 0, 0, 0, 0, 0, 93);
     loop {}
 }
 
-// Linux system calls for the RISC-V architecture: Write.
-// See: https://github.com/westerndigitalcorporation/RISC-V-Linux/blob/master/riscv-pk/pk/syscall.h
-fn syscall_write(fd: u64, buf: *const u8, count: u64) -> u64 {
-    // Stdin is defined to be fd 0, stdout is defined to be fd 1, and stderr is defined to be fd 2.
-    syscall(fd, buf as u64, count, 0, 0, 0, 0, 64)
+fn syscall_write(buf: *const u8) -> u64 {
+    syscall(buf as u64, 0, 0, 0, 0, 0, 0, 2177)
 }
 
 #[no_mangle]
@@ -64,14 +59,11 @@ unsafe extern "C" fn main(argc: u64, argv: *const *const i8) -> u64 {
     unsafe {
         ALLOC.lock().init(HEAPS.as_mut_ptr(), 1024);
     }
-    let mut args = Vec::new();
-    for i in 1..argc {
-        let argn = core::ffi::CStr::from_ptr(argv.add(i as usize).read());
-        let argn = String::from(argn.to_string_lossy());
-        args.push(argn);
-    }
-    let mut data = args.join(" ");
-    data.push('\n');
-    syscall_write(1, data.as_ptr(), data.len() as u64);
+
+    let s = String::from("Hello World!");
+    let c_string = alloc::ffi::CString::new(s.as_str()).unwrap();
+    let c_str = c_string.as_c_str();
+
+    syscall_write(c_str.as_ptr() as *const u8);
     return 0;
 }

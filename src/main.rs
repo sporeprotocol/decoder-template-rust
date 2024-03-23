@@ -2,8 +2,9 @@
 #![no_std]
 
 extern crate alloc;
-use alloc::string::String;
-use alloc::vec::Vec;
+
+mod decoder;
+mod schema;
 
 static mut HEAPS: [u8; 1024] = [0; 1024];
 #[global_allocator]
@@ -60,10 +61,11 @@ unsafe extern "C" fn main(argc: u64, argv: *const *const i8) -> u64 {
         ALLOC.lock().init(HEAPS.as_mut_ptr(), 1024);
     }
 
-    let s = String::from("Hello World!");
-    let c_string = alloc::ffi::CString::new(s.as_str()).unwrap();
-    let c_str = c_string.as_c_str();
-
-    syscall_write(c_str.as_ptr() as *const u8);
-    return 0;
+    match decoder::dobs_decode(argc, argv) {
+        Ok(bytes) => {
+            syscall_write(bytes.as_ptr() as *const u8);
+            return 0;
+        }
+        Err(error) => return error as u64,
+    }
 }

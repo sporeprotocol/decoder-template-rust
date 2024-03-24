@@ -2,18 +2,22 @@
 #![no_std]
 
 extern crate alloc;
+use core::ffi::CStr;
 
-mod decoder;
-mod schema;
+use alloc::{format, vec::Vec};
+use spore_dob_721::decoder::{dobs_decode, dobs_parse_parameters};
 
-static mut HEAPS: [u8; 1024] = [0; 1024];
+const HEAPS_SIZE: usize = 1024 * 64;
+
+static mut HEAPS: [u8; HEAPS_SIZE] = [0; HEAPS_SIZE];
 #[global_allocator]
 static ALLOC: linked_list_allocator::LockedHeap = linked_list_allocator::LockedHeap::empty();
 
 #[panic_handler]
-fn panic_handler(_: &core::panic::PanicInfo) -> ! {
+fn panic_handler(panic_info: &core::panic::PanicInfo) -> ! {
     // If the main thread panics it will terminate all your threads and end your program with code 101.
     // See: https://github.com/rust-lang/rust/blob/master/library/core/src/macros/panic.md
+    syscall_write(format!("{panic_info:?}").as_ptr());
     syscall_exit(101)
 }
 
@@ -39,7 +43,7 @@ fn syscall_exit(code: u64) -> ! {
     loop {}
 }
 
-fn syscall_write(buf: *const u8) -> u64 {
+pub fn syscall_write(buf: *const u8) -> u64 {
     syscall(buf as u64, 0, 0, 0, 0, 0, 0, 2177)
 }
 
@@ -58,10 +62,19 @@ pub unsafe extern "C" fn _start() {
 #[no_mangle]
 unsafe extern "C" fn main(argc: u64, argv: *const *const i8) -> u64 {
     unsafe {
-        ALLOC.lock().init(HEAPS.as_mut_ptr(), 1024);
+        ALLOC.lock().init(HEAPS.as_mut_ptr(), HEAPS_SIZE);
     }
 
-    match decoder::dobs_decode(argc, argv) {
+    let mut args = Vec::new();
+    for i in 0..argc {
+        let argn = unsafe { CStr::from_ptr(argv.add(i as usize).read()) };
+        args.push(argn.to_bytes());
+    }
+    let dob_params = match dobs_parse_parameters(args) {
+        Ok(value) => value,
+        Err(err) => return err as u64,
+    };
+    match dobs_decode(dob_params) {
         Ok(bytes) => {
             syscall_write(bytes.as_ptr() as *const u8);
             return 0;

@@ -15,10 +15,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "faster-hex"
-version = "0.9.0"
+name = "hex"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2a2b11eda1d40935b26cf18f6833c526845ae8c41e58d09af6adeb6f0269183"
+checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
 name = "itoa"
@@ -37,9 +37,9 @@ dependencies = [
 
 [[package]]
 name = "lock_api"
-version = "0.4.10"
+version = "0.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1cc9717a20b1bb222f333e6a92fd32f7d8a18ddc5a3191a11af45dcbf4dcd16"
+checksum = "3c168f8615b12bc01f9c17e2eb0cc07dcae1940121185446edc3744920e8ef45"
 dependencies = [
  "autocfg",
  "scopeguard",
@@ -140,11 +140,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "spore-dobs-decoder"
+name = "spore-dob-721"
 version = "0.1.0"
+source = "git+https://github.com/sporeprotocol/spore-dob-721?rev=bbe2383bb#bbe2383bb920028c006a790a7238236fe13f699f"
 dependencies = [
- "faster-hex",
- "linked_list_allocator",
+ "hex",
  "molecule",
  "rand",
  "serde",
@@ -152,10 +152,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "spore-dobs-decoder"
+version = "0.1.0"
+dependencies = [
+ "linked_list_allocator",
+ "spore-dob-721",
+]
+
+[[package]]
 name = "syn"
-version = "2.0.53"
+version = "2.0.55"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7383cd0e49fff4b6b90ca5670bfd3e9d6a733b3f90c686605aa7eec8c4996032"
+checksum = "002a1b3dbf967edfafc32655d0f377ab0bb7b994aa1d32c8cc7e9b8bf3ebb8f0"
 dependencies = [
  "proc-macro2",
  "quote",

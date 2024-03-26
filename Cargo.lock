@@ -142,7 +142,7 @@ dependencies = [
 [[package]]
 name = "spore-dob-721"
 version = "0.1.0"
-source = "git+https://github.com/sporeprotocol/spore-dob-721?rev=bbe2383bb#bbe2383bb920028c006a790a7238236fe13f699f"
+source = "git+https://github.com/sporeprotocol/spore-dob-721?rev=0de98c1#0de98c1fb85a09f8f65f9c4f6aed1e241616d26b"
 dependencies = [
  "hex",
  "molecule",

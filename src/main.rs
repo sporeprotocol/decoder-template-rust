@@ -75,7 +75,8 @@ unsafe extern "C" fn main(argc: u64, argv: *const *const i8) -> u64 {
         Err(err) => return err as u64,
     };
     match dobs_decode(dob_params) {
-        Ok(bytes) => {
+        Ok(mut bytes) => {
+            bytes.push(0);
             syscall_write(bytes.as_ptr() as *const u8);
             return 0;
         }

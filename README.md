@@ -13,3 +13,8 @@ $ cargo run -- 0200030d186509f0 8f010000140000006c000000130100006501000058000000
 
 "[{\"name\":\"color\",\"traits\":[{\"String\":\"green\"}]},{\"name\":\"power\",\"traits\":[{\"Number\":100},{\"Float\":0.4}]},{\"name\":\"speed\",\"traits\":[{\"Float\":0.6}]},{\"name\":\"lucky\",\"traits\":[{\"Number\":24}]}]"
 ```
+
+How to integrate:
+1. install `ckb-vm-runner` into your back server natively
+2. call binary `ckb-vm-runner` with DNA and Pattern parameters right in your server program
+3. parse the JSON traits result

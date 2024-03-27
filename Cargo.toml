@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 linked_list_allocator = "*"
 
-spore-dob-721 = { git = "https://github.com/sporeprotocol/spore-dob-721", rev = "0de98c1" }
+spore-dob-721 = { git = "https://github.com/sporeprotocol/spore-dob-721" }
 

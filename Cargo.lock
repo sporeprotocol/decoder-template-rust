@@ -140,9 +140,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "spore-dob-721"
+name = "spore-dob-0"
 version = "0.1.0"
-source = "git+https://github.com/sporeprotocol/spore-dob-721#a045ac9d8ee8cee696aabcad5f8de7d22cbbaf1a"
+source = "git+https://github.com/sporeprotocol/spore-dob-0#572f42fc7287f8511c9eefcac908793069a7b59a"
 dependencies = [
  "hex",
  "molecule",
@@ -156,7 +156,7 @@ name = "spore-dobs-decoder"
 version = "0.1.0"
 dependencies = [
  "linked_list_allocator",
- "spore-dob-721",
+ "spore-dob-0",
 ]
 
 [[package]]

@@ -5,7 +5,7 @@ extern crate alloc;
 use core::ffi::CStr;
 
 use alloc::{format, vec::Vec};
-use spore_dob_721::decoder::{dobs_decode, dobs_parse_parameters};
+use spore_dob_0::decoder::{dobs_decode, dobs_parse_parameters};
 
 const HEAPS_SIZE: usize = 1024 * 64;
 

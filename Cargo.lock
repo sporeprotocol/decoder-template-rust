@@ -127,7 +127,7 @@ dependencies = [
 [[package]]
 name = "spore-dob-0"
 version = "0.1.0"
-source = "git+https://github.com/sporeprotocol/spore-dob-0?rev=60399163#60399163031565d2df5e2cf2e970b9774b494453"
+source = "git+https://github.com/sporeprotocol/spore-dob-0?rev=296de5c#296de5cf9f1412214b04120c9c7ffcc0741697b3"
 dependencies = [
  "hex",
  "rand",
